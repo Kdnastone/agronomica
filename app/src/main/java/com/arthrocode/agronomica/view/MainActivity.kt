@@ -1,5 +1,6 @@
 package com.arthrocode.agronomica.view
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -25,6 +26,8 @@ class MainActivity : AppCompatActivity() {
 
         mainBinding.floatingActionButton.setOnClickListener {
 
+            val intent = Intent(this,AddImageActivity::class.java)
+            startActivity(intent)
         }
     }
 }
