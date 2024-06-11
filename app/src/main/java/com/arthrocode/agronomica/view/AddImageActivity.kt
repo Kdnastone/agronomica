@@ -10,23 +10,29 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
 import android.provider.MediaStore
-import android.widget.AdapterView.OnItemSelectedListener
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.lifecycle.ViewModelProvider
 import com.arthrocode.agronomica.databinding.ActivityAddImageBinding
+import com.arthrocode.agronomica.model.MyImages
 import com.arthrocode.agronomica.util.ControlPermission
 import com.arthrocode.agronomica.util.ConvertImage
+import com.arthrocode.agronomica.viewmodel.MyImagesViewModel
 
 class AddImageActivity : AppCompatActivity() {
 
     lateinit var addImageBinding: ActivityAddImageBinding
     lateinit var activityResultLauncherForSelectedImage: ActivityResultLauncher<Intent>
     lateinit var selectImage: Bitmap
+    lateinit var myImagesViewModel: MyImagesViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         addImageBinding = ActivityAddImageBinding.inflate(layoutInflater)
         setContentView(addImageBinding.root)
+
+        myImagesViewModel = ViewModelProvider(this)[MyImagesViewModel::class.java]
 
         //registro
         registerActivityForSelectImage()
@@ -61,6 +67,16 @@ class AddImageActivity : AppCompatActivity() {
 
         addImageBinding.buttonAdd.setOnClickListener{
 
+            val title = addImageBinding.editTextAddTitle.text.toString()
+            val description = addImageBinding.editTextAddDescription.text.toString()
+            val imageAsString = ConvertImage.convertToString(selectImage)
+
+            if (imageAsString != null){
+                myImagesViewModel.insert(MyImages(title, description, imageAsString))
+                finish()
+            }else{
+                Toast.makeText(applicationContext, "Hay un problema, por favor seleccione una nueva imagen", Toast.LENGTH_SHORT)
+            }
         }
 
         addImageBinding.toolbarAddImage.setNavigationOnClickListener {
