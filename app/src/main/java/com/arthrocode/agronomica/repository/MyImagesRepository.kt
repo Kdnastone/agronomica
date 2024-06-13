@@ -20,9 +20,11 @@ class MyImagesRepository(application: Application) {
     suspend fun insert(myImages: MyImages){
         myImagesDao.insert(myImages)
     }
+
     suspend fun update(myImages: MyImages){
         myImagesDao.update(myImages)
     }
+
     suspend fun delete(myImages: MyImages){
         myImagesDao.delete(myImages)
     }
@@ -31,4 +33,7 @@ class MyImagesRepository(application: Application) {
         return imagesList
     }
 
+    suspend fun getItemById(id:Int) : MyImages{
+        return myImagesDao.getItemById(id)
+    }
 }

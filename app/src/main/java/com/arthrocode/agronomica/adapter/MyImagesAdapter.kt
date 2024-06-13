@@ -1,13 +1,16 @@
 package com.arthrocode.agronomica.adapter
 
+import android.app.Activity
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.arthrocode.agronomica.databinding.ImageItemBinding
 import com.arthrocode.agronomica.model.MyImages
 import com.arthrocode.agronomica.util.ConvertImage
+import com.arthrocode.agronomica.view.UpdateImageActivity
 
-class MyImagesAdapter : RecyclerView.Adapter<MyImagesAdapter.MyImagesViewHolder>() {
+class MyImagesAdapter(val activity: Activity): RecyclerView.Adapter<MyImagesAdapter.MyImagesViewHolder>() {
 
     var imageList : List<MyImages> =ArrayList()
 
@@ -37,7 +40,18 @@ class MyImagesAdapter : RecyclerView.Adapter<MyImagesAdapter.MyImagesViewHolder>
             itemBinding.textViewDescription.text = myImage.imageDescription
             val imageAsBitmap = ConvertImage.convertToBitmap(myImage.imagesAsString)
             itemBinding.imageView.setImageBitmap(imageAsBitmap)
+
+            itemBinding.cardView.setOnClickListener{
+                val intent = Intent(activity, UpdateImageActivity::class.java)
+                intent.putExtra("id", myImage.imageId)
+                activity.startActivity(intent)
+            }
         }
+    }
+
+    fun returnItemAtGivenPosition(position: Int) : MyImages {
+
+        return imageList[position]
     }
 
 
